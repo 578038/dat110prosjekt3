@@ -36,6 +36,33 @@ public class Util {
 	 * @param upper
 	 * @return true if (lower <= id <= upper) or false otherwise
 	 */
+//	public static boolean computeLogic(BigInteger id, BigInteger lower, BigInteger upper) {
+//		
+//		// a formula to check whether an id falls within the set {lower, upper} using the address size as our bound (modulos operation)
+//		// it modifies 'upper' and 'id' when lower > upper e.g. set (6, 2) in mod 10 = {6, 7, 8, 9, 0, 1, 2}
+//		
+//		// implement: read the descriptions above
+//		boolean cond = false;
+//
+//		
+//		
+//		BigInteger adressSize = Hash.addressSize(); // modulo operation
+//		
+//		if(upper.compareTo(lower) == -1) { // if upper < lower
+//			upper = upper.add(adressSize); // upper = upper + modulo
+//			
+//			if((id.compareTo(new BigInteger("0")) == 1 || id.compareTo(new BigInteger("0")) == 0) ||((id.compareTo(lower) == -1))) { //id>=0 or id < lower
+//				id = id.add(adressSize); //id = id + modulo
+//				}
+//		}
+//		
+//		cond = (id.compareTo(lower) == 1 || id.compareTo(lower) == 0) && (id.compareTo(upper) == -1 || id.compareTo(upper) == 0); // check lower <= id <= upper
+//		
+//		
+//		return cond;
+//	}
+//	
+	
 	public static boolean computeLogic(BigInteger id, BigInteger lower, BigInteger upper) {
 		
 		// a formula to check whether an id falls within the set {lower, upper} using the address size as our bound (modulos operation)
@@ -45,8 +72,25 @@ public class Util {
 		boolean cond = false;
 
 		
+		BigInteger nupper = upper;
+		BigInteger adressSize = Hash.addressSize(); // modulo operation
+		
+		if(lower.compareTo(upper) == 1) { // if upper < lower
+			nupper = upper.add(adressSize); // upper = upper + modulo
+			
+			if((id.compareTo(new BigInteger("0")) == 1 || id.compareTo(new BigInteger("0")) == 0) &&((id.compareTo(upper) == -1) || id.compareTo(upper)==0)) { //id>=0 or id < lower
+				id = id.add(adressSize); //id = id + modulo
+				}
+		}
+		
+		upper = nupper;
+		cond = (id.compareTo(lower) == 1 || id.compareTo(lower) == 0) && (id.compareTo(upper) == -1 || id.compareTo(upper) == 0); // check lower <= id <= upper
+		
+		
 		return cond;
 	}
+	
+	
 	
 	public static List<String> toString(List<NodeInterface> list) throws RemoteException {
 		List<String> nodestr = new ArrayList<String>();
